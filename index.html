@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aza - Creative Media</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #e0e0e0;
+            background: #0a0a0a;
+            line-height: 1.6;
+            letter-spacing: -0.3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 40px 80px;
+            background: #0a0a0a;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            color: #ffffff;
+        }
+
+        .hero-text h1 .highlight {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .hero-text p {
+            color: #b0b0b0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .hero-image {
+            text-align: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 20px;
+            object-fit: cover;
+            aspect-ratio: 1;
+            border: 1px solid #2a2a2a;
+        }
+
+        /* Filter Section */
+        .controls {
+            padding: 60px 40px;
+            background: #0a0a0a;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .controls-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 1px solid #2a2a2a;
+            background: transparent;
+            color: #e0e0e0;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #505050;
+            background: #1a1a1a;
+        }
+
+        .filter-btn.active {
+            border-color: #ffffff;
+            background: #ffffff;
+            color: #0a0a0a;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 80px 40px;
+            background: #0a0a0a;
+        }
+
+        .gallery-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            text-align: center;
+            letter-spacing: -0.8px;
+            color: #ffffff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+        }
+
+        .card {
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: #3a3a3a;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+            background: #1a1a1a;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.04);
+        }
+
+        .card-content {
+            padding: 32px 24px;
+        }
+
+        .card-category {
+            font-size: 11px;
+            color: #808080;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #a0a0a0;
+            line-height: 1.6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #121212;
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        }
+
+        .modal-video-container {
+            width: 100%;
+            padding-bottom: 56.25%;
+            position: relative;
+            background: #000000;
+        }
+
+        .modal-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .modal-info {
+            padding: 48px;
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 16px;
+            border-radius: 24px;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 1001;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+            color: #ffffff;
+            letter-spacing: -0.8px;
+        }
+
+        .modal-desc {
+            color: #b0b0b0;
+            line-height: 1.8;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: #707070;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f0f;
+            border-top: 1px solid #1a1a1a;
+            padding: 80px 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .footer-socials h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #e0e0e0;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #0a0a0a;
+            transform: translateY(-6px);
+        }
+
+        .footer-contact h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 14px 18px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            font-weight: 400;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: #606060;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #505050;
+            background: #1a1a1a;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .contact-btn {
+            padding: 14px 24px;
+            background: #ffffff;
+            border: 1px solid #ffffff;
+            border-radius: 8px;
+            color: #0a0a0a;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #e0e0e0;
+            border-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 48px;
+            margin-top: 48px;
+            border-top: 1px solid #1a1a1a;
+            color: #606060;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 24px 40px;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .hero-text p {
+                font-size: 15px;
+            }
+
+            .hero-image img {
+                max-width: 300px;
+            }
+
+            .controls {
+                padding: 40px 24px;
+            }
+
+            .gallery {
+                padding: 40px 24px;
+            }
+
+            .gallery-title {
+                font-size: 24px;
+                margin-bottom: 40px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .modal-info {
+                padding: 32px 24px;
+            }
+
+            .modal-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>hai, i'm <span class="highlight">aza</span></h1>
+                <p>saya seorang creative media enthusiast yang suka banget nge-blend visual, motion, dan cerita jadi satu video yang estetik. dari konsep mentah sampai jadi hasil akhir yang rapi, semuanya ada di sini. let's explore my digital playground!</p>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Aza">
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="controls">
+        <div class="controls-inner">
+            <div class="filters" id="filterContainer"></div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="gallery">
+        <div class="gallery-inner">
+            <h2 class="gallery-title">My Works</h2>
+            <div class="grid" id="gallery"></div>
+            <div class="empty" id="emptyState" style="display: none;">No works found.</div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <button class="modal-close" onclick="closeModal()">Close</button>
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-video-container" id="modalVideoContainer"></div>
+            <div class="modal-info">
+                <div class="card-category" id="modalCategory"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-desc" id="modalDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-socials">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/_aza.ahmad/" target="_blank" class="social-btn" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://wa.me/6283150574677" target="_blank" class="social-btn" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ahmad-aza/" target="_blank" class="social-btn" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-contact">
+                <h3>Get in touch</h3>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Your name" required>
+                    <input type="email" placeholder="Your email" required>
+                    <textarea placeholder="Your message" required></textarea>
+                    <button type="submit" class="contact-btn">Send message</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024 Aza. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const works = [
+            {
+                id: 1,
+                title: 'Cinematic Urban Exploration',
+                category: 'Videography',
+                thumb: 'https://images.unsplash.com/photo-1574375927708-d5b85b857323?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'A stunning visual journey through urban landscapes with cinematic cinematography.',
+                year: 2024
+            },
+            {
+                id: 2,
+                title: 'Brand Identity Showcase',
+                category: 'Design',
+                thumb: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'Complete brand design system from concept to execution.',
+                year: 2024
+            },
+            {
+                id: 3,
+                title: 'Travel Documentary Series',
+                category: 'Videography',
+                thumb: 'https://images.unsplash.com/photo-1533050487297-4d71bcdd2085?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'A comprehensive travel series capturing culture and landscapes.',
+                year: 2024
+            },
+            {
+                id: 4,
+                title: 'Motion Graphics Reel',
+                category: 'Animation',
+                thumb: 'https://images.unsplash.com/photo-1536240478307-13ccc2c94e4c?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'Dynamic motion graphics and animation portfolio.',
+                year: 2023
+            },
+            {
+                id: 5,
+                title: 'Product Video',
+                category: 'Editing',
+                thumb: 'https://images.unsplash.com/photo-1542478519244-2e0b1ab8dd64?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'Professional product video editing and color grading.',
+                year: 2023
+            },
+            {
+                id: 6,
+                title: 'Corporate Event Coverage',
+                category: 'Videography',
+                thumb: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=400&fit=crop',
+                videoId: 'dQw4w9WgXcQ',
+                desc: 'Professional event videography and editing.',
+                year: 2023
+            }
+        ];
+
+        let currentFilter = 'All';
+
+        function getCategories() {
+            return ['All', ...new Set(works.map(w => w.category))];
+        }
+
+        function renderFilters() {
+            const container = document.getElementById('filterContainer');
+            getCategories().forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+                btn.textContent = cat;
+                btn.onclick = () => filterBy(cat);
+                container.appendChild(btn);
+            });
+        }
+
+        function filterBy(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === category);
+            });
+            renderGallery();
+        }
+
+        function getFilteredWorks() {
+            return works.filter(work => {
+                return currentFilter === 'All' || work.category === currentFilter;
+            });
+        }
+
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            const filtered = getFilteredWorks();
+
+            gallery.innerHTML = filtered.map((work, index) => `
+                <div class="card" style="animation-delay: ${index * 0.05}s" onclick="openModal(${work.id})">
+                    <img src="${work.thumb}" alt="${work.title}" class="card-image">
+                    <div class="card-content">
+                        <div class="card-category">${work.category} • ${work.year}</div>
+                        <div class="card-title">${work.title}</div>
+                        <div class="card-desc">${work.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('emptyState').style.display = filtered.length === 0 ? 'block' : 'none';
+        }
+
+        function openModal(id) {
+            const work = works.find(w => w.id === id);
+            document.getElementById('modalTitle').textContent = work.title;
+            document.getElementById('modalCategory').textContent = work.category + ' • ' + work.year;
+            document.getElementById('modalDesc').textContent = work.desc;
+            document.getElementById('modalVideoContainer').innerHTML = `
+                <iframe src="https://www.youtube.com/embed/${work.videoId}" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.getElementById('modal').addEventListener('click', closeModal);
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.elements[0].value;
+            const email = this.elements[1].value;
+            const message = this.elements[2].value;
+            
+            const mailtoLink = `mailto:itsalvaro99@gmail.com?subject=Message from ${name}&body=${encodeURIComponent(message)}%0A%0AFrom: ${email}`;
+            window.location.href = mailtoLink;
+            
+            this.reset();
+        });
+
+        renderFilters();
+        renderGallery();
+    </script>
+
+</body>
+</html>
